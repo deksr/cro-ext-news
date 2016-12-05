@@ -6,8 +6,8 @@
   "version": "1.0",
 
   "browser_action": {
-   "default_icon": "chro-ext-news-logo.png",
-   "default_popup": "index.html"
+   "default_icon": "extension/chro-ext-news-logo.png",
+   "default_popup": "extension/index.html"
   },
   "permissions": [
    "activeTab"
