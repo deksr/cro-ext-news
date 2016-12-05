@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/deksr/cro-ext-news/issues"
   },
-  "homepage": "https://github.com/deksr/cro-ext-news#readme"
+  "homepage": "https://github.com/deksr/cro-ext-news#readme",
+  "dependencies": {
+    "axios": "^0.15.3",
+    "browser-request": "^0.3.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-preset-es2015": "^6.18.0",
+    "webpack": "^1.13.3"
+  }
 }
