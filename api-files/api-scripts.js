@@ -4,15 +4,26 @@ import  axios from 'axios';
 
 // this is still giving an error 401 because it is not able to access the data. need to register
 $(document).ready(function(){
+	// $.ajax({
+ //    url: "http://eventregistry.org/json/article?ignoreKeywords=&keywords=fruits%20nuts&action=getArticles&resultType=articles&callback=JSON_CALLBACK",
+ //    method: 'GET',
+ //    dataType: "json"
+ //  }).fail(function (err) {
+ //  	console.log(err)
+ //  }).done(function(data) {
+ //    console.log(data); 
+ //  })
+
 	$.ajax({
-    url: "http://eventregistry.org/json/article?ignoreKeywords=&keywords=fruits%20nuts&action=getArticles&resultType=articles&callback=JSON_CALLBACK",
-    method: 'GET',
-    dataType: "json"
-  }).fail(function (err) {
-  	console.log(err)
-  }).done(function(data) {
-    console.log(data); 
-  })
+	    url: "http://eventregistry.org/json/article?ignoreKeywords=&keywords=fruits%20nuts&action=getArticles&resultType=articles",
+	    method: 'POST',
+	    dataType: "json",
+	    data: {"username": "blablabla@yahoo.com", "password": "blabla"}
+	  }).fail(function (err) {
+	  	console.log(err)
+	  }).done(function(data) {
+	    console.log(data); 
+	  })
 })
 
 
