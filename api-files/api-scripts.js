@@ -3,7 +3,7 @@ var request = require('browser-request')
 import  axios from 'axios';
 
 // this is still giving an error 401 because it is not able to access the data. need to register
-$(document).ready(function(){
+// $(document).ready(function(){
 	// $.ajax({
  //    url: "http://eventregistry.org/json/article?ignoreKeywords=&keywords=fruits%20nuts&action=getArticles&resultType=articles&callback=JSON_CALLBACK",
  //    method: 'GET',
@@ -14,25 +14,25 @@ $(document).ready(function(){
  //    console.log(data); 
  //  })
 
-	$.ajax({
-	    url: "http://eventregistry.org/json/article?ignoreKeywords=&keywords=fruits%20nuts&action=getArticles&resultType=articles",
-	    method: 'POST',
-	    dataType: "json",
-	    data: {"username": "blablabla@yahoo.com", "password": "blabla"}
-	  }).fail(function (err) {
-	  	console.log(err)
-	  }).done(function(data) {
-	    console.log(data); 
-	  })
-})
+// 	$.ajax({
+// 	    url: "http://eventregistry.org/json/article?ignoreKeywords=&keywords=fruits%20nuts&action=getArticles&resultType=articles",
+// 	    method: 'POST',
+// 	    dataType: "json",
+// 	    data: {"username": "d@yahoo.com", "password": "paword"}
+// 	  }).fail(function (err) {
+// 	  	console.log(err)
+// 	  }).done(function(data) {
+// 	    console.log(data); 
+// 	  })
+// })
 
 
 // this works:
- // axios.get('http://pokeapi.co/api/v2/ability/34/').then(function (response) {
- //    // console.log(response.data.pokemon);
- //   console.log(response.data.pokemon)
+ axios.get('https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=60941c39a76e4f14902097a5030f4cab').then(function (response) {
+    // console.log(response.data.pokemon);
+   console.log(response.data)
  
- //  })
+  })
 
 
 // below code works:
