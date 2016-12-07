@@ -4,12 +4,19 @@
   "name": "chro-ext-news",
   "description": "This extension will ...",
   "version": "1.0",
-
   "browser_action": {
-   "default_icon": "extension/chro-ext-news-logo.png",
+   "default_icon": "extension/img/chro-ext-news-logo.png",
    "default_popup": "extension/index.html"
   },
   "permissions": [
    "activeTab"
-   ]
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://www.google.com/*"],
+      "css": ["extension/css/styles.css"],
+      "js": ["extension/javascript/jquery-2.1.4.js", "extension/javascript/scripts.js"],
+      "run_at": "document_end"
+    }
+  ]
 }

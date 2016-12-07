@@ -4,19 +4,36 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title></title>
-	<link rel="stylesheet" href="">
+
+	<link rel="stylesheet" href="css/styles.css">
+	
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+
+
 </head>
 <body>
+	<div class="main">
+		<img src="img/chro-ext-news-logo.png" class="dog-image">
+		<h5>News Shark</h5>
+		<p> Latest news on the go!</p> 
+		<label class="switch">
+      <input type="checkbox">
+      <div class="slider round"></div>
+    </label> <br>
+ 		<a href="#" id="checkPage">settings</a>
+ 		<p id="demo"> </p>
+		
+  </div>
+
+  <script src="bundle.js"> </script>
 
 
-	hi there hp hhfd
-	<h1>News Terrier</h1>
-  <button id="checkPage">Go to news page</button>
-
-	<script src="scripts.js"></script>
-
+	<script src="javascript/scripts.js"></script>
 
 	<script>
+
 	// chrome.notifications.create(string notificationId, NotificationOptions options, function callback)
 	if (window.webkitNotifications) {
   console.log("Notifications are supported!");
