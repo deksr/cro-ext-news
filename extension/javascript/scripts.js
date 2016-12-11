@@ -1,5 +1,15 @@
 console.log("from javascript extension");
 
+$( document ).ready(function() {
+  console.log( "ready from jquery!" );
+
+
+  $('.settings-button').click(function(event) {
+    $('.checkbox-list').toggle() ;
+  });
+
+});
+
 
 
 // document.addEventListener('DOMContentLoaded', function() {
