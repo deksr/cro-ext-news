@@ -6,6 +6,7 @@ import {Router, Route, browserHistory, Link, IndexRoute} from 'react-router'
 import ToggleButton from 'react-toggle-button'
 import Toggle from 'react-toggle' //using this now
 import  axios from 'axios';
+import Rough from './rough.js'
 
 
 
@@ -13,18 +14,36 @@ var SettingList = React.createClass({
 
   getInitialState: function() {
     return {
-      checkboxBBC: 'BBC',
-      checkboxCNN: 'CNN',
-      checkboxAP: 'AP'
+      checkboxBBC: 'bbc',
+      checkboxCNN: 'cnn',
+      checkboxAP: 'ap'
     } 
   },
 
 
   sendCheckBoxValue: function(e){
-    console.log("selected")
+    // console.log("selected")
     // console.log(e.target.checked)//this is for the value = {this.state.checkboxValue} which sends true if selected
     // console.log(this.refs.textInput.value)//this is for the ref="textInput"
-    console.log(e.target.value)//this is for the value 
+    console.log(this.refs.textInput.value)//this is for the ref="textInput"
+
+
+    this.setState({
+      checkboxBBC: 'bbc',
+      checkboxCNN: 'CNN',
+      checkboxAP: 'AP'
+    });
+
+    // console.log(e.target.value)//this is for the value 
+
+
+
+   //  axios.get('https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=60941c39a76e4f14902097a5030f4cab').then(function (response) {
+   //  // console.log(response.data.pokemon);
+   // console.log(response.data)
+ 
+  // })
+
   },
   
 
@@ -33,7 +52,8 @@ var SettingList = React.createClass({
       <div>
         <p><input type="checkbox" ref="textInput" value={this.state.checkboxBBC} onChange={this.sendCheckBoxValue}/>BBC</p> 
         <p><input type="checkbox" ref="textInput" value={this.state.checkboxCNN} onChange={this.sendCheckBoxValue}/>CNN</p> 
-        <p><input type="checkbox" ref="textInput" value={this.state.checkboxAP} onChange={this.sendCheckBoxValue}/>AP</p>    
+        <p><input type="checkbox" ref="textInput" value={this.state.checkboxAP} onChange={this.sendCheckBoxValue}/>AP</p> 
+        <p>{this.state.checkboxBBC} </p>   
       </div>
     )
   } 
@@ -42,7 +62,12 @@ var SettingList = React.createClass({
 
 
 
+
+
+
 var SettingButton = React.createClass({
+
+
 
   getInitialState: function() {
     return {
@@ -54,8 +79,8 @@ var SettingButton = React.createClass({
     e.preventDefault();
     console.log("clicked"); 
     this.setState({
-     settingTab: !this.state.settingTab
-   })
+      settingTab: !this.state.settingTab
+    })
   },
 
   render: function () {
@@ -66,6 +91,7 @@ var SettingButton = React.createClass({
         <p> Latest news on the go!</p>  
         <a className="settings-button" onClick={this. showSettings}>settings</a><br/> 
         {this.state.settingTab && <SettingList/>}
+        <Rough/>
       </div>
     )
   } 
