@@ -6,7 +6,9 @@ import {Router, Route, browserHistory, Link, IndexRoute} from 'react-router'
 import ToggleButton from 'react-toggle-button'
 import Toggle from 'react-toggle' //using this now
 import  axios from 'axios';
-import Rough from './rough.js'
+// import Rough from './rough.js'
+import RoughTwo from './rough2.js'
+
 
 
 
@@ -91,7 +93,7 @@ var SettingButton = React.createClass({
         <p> Latest news on the go!</p>  
         <a className="settings-button" onClick={this. showSettings}>settings</a><br/> 
         {this.state.settingTab && <SettingList/>}
-        <Rough/>
+        <RoughTwo/>
       </div>
     )
   } 

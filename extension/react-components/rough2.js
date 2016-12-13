@@ -3,56 +3,38 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import {Router, Route, browserHistory, Link, IndexRoute} from 'react-router'
 
-import  axios from 'axios';
 
 
+var RoughTwo = React.createClass({
 
-var Rough = React.createClass({
 	getInitialState: function() {
     return {
-      bbc: 'initialbbc',
-      cnn: 'initialcnn',
-      ap: 'initialap'
+      bbc: false,
+      cnn: false
     } 
   },
-
-
-  // sendCheckBoxValue: function(event,type){
-  //   console.log(event.target.checked)
-  //   console.log(event.target.value)
-  //   // console.log(event.target.type)
-
-
-
-  //   let state = {}
-  //   if(type === 'bbc') state.bbc = event.target.value
-  //   if(type === 'cnn') state.cnn = event.target.value
-  //   this.setState(state)
-  //   // if (event.target.checked === true){
-  //   //   console.log(type)
-  //   // }
-  // },
 
 
   sendCheckBoxValue: function(event,type){
     console.log(event.target.checked)
     console.log(event.target.value)
-    // console.log(event.target.type)
-
-
 
     let state = {}
-    if(type === 'bbc' && event.target.checked === true) 
-    	state.bbc = event.target.value
-    // else{ 
-    // 	state.bbc = 'null'
-    // }
 
-    if(type === 'cnn') state.cnn = event.target.value
+    if (type === 'bbc' && event.target.checked === true){
+    	state.bbc = event.target.value
+    }	
+    else if(type === 'cnn' && event.target.checked === true) {
+    	state.cnn = event.target.value
+    }
+    else if (type === 'bbc' && event.target.checked === false){
+    	state.bbc = !this.state.bbc
+    }
+    else if (type === 'cnn' && event.target.checked === false){
+    	state.cnn = !this.state.cnn
+    }
+
     this.setState(state)
-    // if (event.target.checked === true){
-    //   console.log(type)
-    // }
   },
 
 
@@ -61,7 +43,10 @@ var Rough = React.createClass({
   	// console.log(event.target.value)
   	// console.log(this.state.value)
   	// console.log(this.state.cnn)
+  	console.log("clicked")
+  	console.log(this.state.bbc + this.state.cnn)
   },
+
 
 
   render: function () {
@@ -73,9 +58,6 @@ var Rough = React.createClass({
 		      <input  type="checkbox" value = "cnn" onChange={function(event){ 
            return this.sendCheckBoxValue(event,'cnn') 
         }.bind(this)}/> cnn news 
-		      <input  type="checkbox" value = "ap" onChange={function(event){ 
-           return this.sendCheckBoxValue(event,'ap') 
-        }.bind(this)}/> ap news
 		      <button onClick={this.submitForm}> save </button>
 		      {this.state.bbc}
 		      {this.state.cnn}
@@ -83,8 +65,12 @@ var Rough = React.createClass({
     )
   } 
 
+
+
 })
 
-export default Rough
 
 
+
+
+export default RoughTwo
