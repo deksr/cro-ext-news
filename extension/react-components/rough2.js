@@ -1,7 +1,9 @@
 import ReactDOM from 'react-dom';
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import {Router, Route, browserHistory, Link, IndexRoute} from 'react-router'
+import {Router, Route, browserHistory, Link, IndexRoute} from 'react-router';
+import  axios from 'axios';
+
 
 
 
@@ -22,7 +24,7 @@ var RoughTwo = React.createClass({
     let state = {}
 
     if (type === 'bbc' && event.target.checked === true){
-    	state.bbc = event.target.value
+    	state.bbc = event.target.value;
     }	
     else if(type === 'cnn' && event.target.checked === true) {
     	state.cnn = event.target.value
@@ -39,12 +41,17 @@ var RoughTwo = React.createClass({
 
 
   submitForm: function(event){
-
-  	// console.log(event.target.value)
-  	// console.log(this.state.value)
-  	// console.log(this.state.cnn)
   	console.log("clicked")
-  	console.log(this.state.bbc + this.state.cnn)
+  	console.log(this.state)
+
+	  axios.all([
+	    axios.get(' https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'),
+	    axios.get('https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab')
+	  ]).then(axios.spread(function (seat, volkswagen) {
+	    console.log(seat.data);
+	    console.log(volkswagen.data);})).catch(function(error){
+	  		 console.log(error) })
+	
   },
 
 
