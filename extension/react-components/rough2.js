@@ -23,7 +23,7 @@ var RoughTwo = React.createClass({
     console.log(event.target.value)
 
 
-   // here we are setting the state
+   // here we are setting the state logic
    // *******************************
     let state = {}
 
@@ -56,18 +56,18 @@ var RoughTwo = React.createClass({
 
 
     // logic for matching two objects and pulling out only the matched property name
+    //refer to seeyesyes > objectified for simple reference
     // *******************************
  
     var emptyarry = [];
     var stateobject = this.state
     var allinks = {
-      bbc: ' https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
-      cnn: 'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
-      ap: 'https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'
+      bbc: axios.get(' https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'),
+      cnn: axios.get('https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'),
+      ap: axios.get('https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab')
     }
 
 
-    //refer to seeyesyes > objectified for simple reference
     for (var key in stateobject ) {
       console.log(key + " = " + stateobject[key]);
       if (typeof(stateobject[key])=== 'string'){
@@ -79,10 +79,23 @@ var RoughTwo = React.createClass({
       }
     }
 
-    // *******************************
+    console.log(emptyarry)
+
+    // making the actual request
+    // ********************************
+
+    axios.all(emptyarry).then(axios.spread(function (seat, volkswagen) {
+      console.log(seat.data);
+      console.log(volkswagen.data);})).catch(function(error){
+        console.log(error) })
+    // ********************************
+
+
+
+
 
     // from mdn notification
-    // ******************************************
+    // ********************************
   	// var notifyMe = function () {
    //    if (!("Notification" in window)) {
    //      alert("This browser does not support desktop notification");
@@ -101,19 +114,8 @@ var RoughTwo = React.createClass({
 
    //  notifyMe();
 
-    // ******************************************
+    // ********************************
 
-
-
-
-
-	  // axios.all([
-	  //   axios.get(' https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'),
-	  //   axios.get('https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab')
-	  // ]).then(axios.spread(function (seat, volkswagen) {
-	  //   console.log(seat.data);
-	  //   console.log(volkswagen.data);})).catch(function(error){
-	  // 		 console.log(error) })
 	
   },
 
