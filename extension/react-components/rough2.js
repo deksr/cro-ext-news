@@ -54,6 +54,10 @@ var RoughTwo = React.createClass({
   	console.log("clicked")
   	console.log(this.state)
 
+
+    // logic for matching two objects and pulling out only the matched property name
+    // *******************************
+ 
     var emptyarry = [];
     var stateobject = this.state
     var allinks = {
@@ -62,6 +66,8 @@ var RoughTwo = React.createClass({
       ap: 'https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'
     }
 
+
+    //refer to seeyesyes > objectified for simple reference
     for (var key in stateobject ) {
       console.log(key + " = " + stateobject[key]);
       if (typeof(stateobject[key])=== 'string'){
@@ -73,12 +79,10 @@ var RoughTwo = React.createClass({
       }
     }
 
+    // *******************************
 
-
-
-
-
-    // from mdn ******************************************
+    // from mdn notification
+    // ******************************************
   	// var notifyMe = function () {
    //    if (!("Notification" in window)) {
    //      alert("This browser does not support desktop notification");
@@ -99,30 +103,6 @@ var RoughTwo = React.createClass({
 
     // ******************************************
 
-
-
-
-
-
-
-    // bbc value is recieved inside the object
-  // if bbc is present inside the array or object, then match it with the corrsponding link and then push it to the axios.all []
-
-  // if property value is not false then 
-
-
-
-
-
-
-
-
-
-
- 
-
-
-  	
 
 
 
