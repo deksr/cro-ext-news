@@ -78,45 +78,55 @@ var RoughTwo = React.createClass({
         }
       }
     }
+    // console.log(emptyarry)
 
-    console.log(emptyarry)
 
-    // making the actual request
-    // ********************************
 
-    axios.all(emptyarry).then(axios.spread(function (seat, volkswagen) {
-      console.log(seat.data);
-      console.log(volkswagen.data);})).catch(function(error){
-        console.log(error) })
+
+    // making the actual request + filtering the undefined objects + 
+    //notes: when an argument is missing gives undefined. so filter using boolean hence : var allnews = [a, b].filter(Boolean) 
     // ********************************
 
 
+    var newsTitle;
+    window.setInterval(axios.all(emptyarry).then(axios.spread(function (a, b) {
+      // console.log(seat.data.articles);
+      var allnews = [a, b].filter(Boolean) 
 
+      for (var i = 0; i < allnews.length; i++) {
+        var selectednews= allnews[i].data.articles.splice(0, 1)
+        for (var j = 0; j < selectednews.length; j++) {
+          newsTitle= selectednews[j].title;
+        };
 
+        // pseudo: 
+        // what is not working? 
+        // emptyarray = [] is empty. everytime a request is made, axios recieved empty array and no promise is returned the second time around. (check this again to see if I'm right?)
+        //currently, same news gets displayed even after 10 minutes of interval request. So set state again. so it will check and see if any data has changed then it will render new notifications(???)  
 
-    // from mdn notification
-    // ********************************
-  	// var notifyMe = function () {
-   //    if (!("Notification" in window)) {
-   //      alert("This browser does not support desktop notification");
-   //    }
-   //    else if (Notification.permission === "granted") {
-   //      var notification = new Notification("Hi there!");
-   //    }
-   //    else if (Notification.permission !== 'denied') {
-   //      Notification.requestPermission(function (permission) {
-   //        if (permission === "granted") {
-   //          var notification = new Notification("Hi there!");
-   //        }
-   //      });
-   //    }
-   //  }
+        //     notification
+        // ********************************
+        var notifyMe = function () {
+          if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+          }
+          else if (Notification.permission === "granted") {
+            var notification = new Notification(newsTitle);
+          }
+          else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+              if (permission === "granted") {
+                var notification = new Notification("Hi there can you please add the data to me so I can start showing notifications!");
+              }
+            });
+          }
+        }
 
-   //  notifyMe();
+        notifyMe();
+      }
 
-    // ********************************
-
-	
+    })).catch(function(error){
+        console.log(error) }),100000)
   },
 
 
