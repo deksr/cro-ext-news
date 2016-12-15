@@ -6,7 +6,6 @@ import  axios from 'axios';
 
 
 
-
 var RoughTwo = React.createClass({
 
 	getInitialState: function() {
@@ -87,9 +86,9 @@ var RoughTwo = React.createClass({
     //notes: when an argument is missing gives undefined. so filter using boolean hence : var allnews = [a, b].filter(Boolean) 
     // ********************************
 
-
+    var boozy = []
     var newsTitle;
-    window.setInterval(axios.all(emptyarry).then(axios.spread(function (a, b) {
+    window.setInterval(axios.all(boozy).then(axios.spread(function (a, b) {
       // console.log(seat.data.articles);
       var allnews = [a, b].filter(Boolean) 
 
@@ -101,7 +100,8 @@ var RoughTwo = React.createClass({
 
         // pseudo: 
         // what is not working? 
-        // emptyarray = [] is empty. everytime a request is made, axios recieved empty array and no promise is returned the second time around. (check this again to see if I'm right?)
+        // emptyarray = [] is empty. everytime a request is made, axios recieved empty array and no promise is returned the second time around. (check this again to see if I'm right?-yup `unexpected identifier` is the error). solutions: maybe use localstorage to store the array and pull when request is made.
+        // localstorage will be used to remember the textbox choices
         //currently, same news gets displayed even after 10 minutes of interval request. So set state again. so it will check and see if any data has changed then it will render new notifications(???)  
 
         //     notification
@@ -146,13 +146,6 @@ var RoughTwo = React.createClass({
 	    </div>
     )
   } 
-
-
-
 })
-
-
-
-
 
 export default RoughTwo
