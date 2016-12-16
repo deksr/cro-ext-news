@@ -57,14 +57,17 @@ var RoughTwo = React.createClass({
     // logic for matching two objects and pulling out only the matched property name that has a string value and the one with false will be ignored.
     //refer to seeyesyes > objectified for simple reference
     // *******************************
- 
-    var emptyArray = [];
-    var stateobject = this.state
+
+    var stateobject = this.state//bring in the state for property key matching with alllinks
     var allinks = {
-      bbc: axios.get(' https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'),
-      cnn: axios.get('https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'),
-      ap: axios.get('https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab')
+      bbc: 'https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
+      cnn:'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
+      ap: 'https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'
     }
+    var emptyArray = [];//to store the value of matched properties
+    var arrayWithAxiosget = [];// add axios.get before each value
+
+
 
 
     // make sure to keep using this logic at intervals to make a request
@@ -83,22 +86,30 @@ var RoughTwo = React.createClass({
 
 
 
+      // add axios.get for all the elements in the array
+      // ********************************
+      emptyArray.forEach(function(e){
+        arrayWithAxiosget.push(axios.get(e))
+      })
+
+
+
       // making the actual request + filtering the undefined objects + 
       // notes: when an argument is missing gives undefined. so filter using boolean hence : var allnews = [a, b].filter(Boolean) 
       // ********************************
-      var newsTitle;
-      axios.all(emptyArray).then(axios.spread(function (a, b) {
+      var newsTitle; //this is for notification
+      axios.all(arrayWithAxiosget).then(axios.spread(function (a, b) {
       // console.log(seat.data.articles);
         var allnews = [a, b].filter(Boolean) //filter undefined 
 
         for (var i = 0; i < allnews.length; i++) {
           var selectednews= allnews[i].data.articles.splice(0, 1)
           for (var j = 0; j < selectednews.length; j++) {
-            newsTitle= selectednews[j].title; //this is for notification
+            newsTitle= selectednews[j].title; 
           };
  
 
-          //     notification
+          //     add notifications
           // ********************************
           var notifyMe = function () {
             if (!("Notification" in window)) {
@@ -115,23 +126,26 @@ var RoughTwo = React.createClass({
               });
             }
           }
+          notifyMe();//part of notification
 
-          notifyMe();
-        }
+
+        }//closing bracket of for loop
       })).catch(function(error){
         console.log(error) })
-      emptyArray.splice(0, emptyArray.length)//emptying the array
-    }, 60000)  
+      arrayWithAxiosget.splice(0, arrayWithAxiosget.length)// empty the axios request array
+      console.log(arrayWithAxiosget)
+      emptyArray.splice(0, emptyArray.length)//emptying array with similar properties
+    }, 10000)  
   },
 
 
         // pseudo: 
           // what is not working? 
-          //emptyarray has promises that gets pushed into it each time a promise setinterval is called. solution: emptying the array.
+          //emptyarray has promises that gets pushed into it each time a promise setinterval is called. solution: emptying the array. works now!!!
 
-          // emptyarray = [] is empty. everytime a request is made, axios recieved empty array and no promise is returned the second time around. (check this again to see if I'm right?-yup `unexpected identifier` is the error). solutions: this is resolved. used setinterval.
+          // emptyarray = [] is empty. everytime a request is made, axios recieved empty array and no promise is returned the second time around. (check this again to see if I'm right?-yup `unexpected identifier` is the error). solutions: this is resolved. used setinterval. works now!!!
 
-          //same news is displayed. list of elements in the array is looped in intervals. not the top most news from ch earequest is displayed.
+          //same news is displayed. list of elements in the array is looped in intervals. not the top most news from ch earequest is displayed. solution: added axios.get using foreach . works now!!!
 
           //check to see if news data is same and then only display news that are new
 
