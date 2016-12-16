@@ -73,16 +73,16 @@ var RoughTwo = React.createClass({
     // make sure to keep using this logic at intervals to make a request
     window.setInterval(function(){
       for (var key in stateobject ) {
-        console.log(key + " = " + stateobject[key]);
+        // console.log(key + " = " + stateobject[key]);
         if (typeof(stateobject[key])=== 'string'){
-          console.log(key);
+          // console.log(key);
           if(Object.hasOwnProperty.call(stateobject, key)){
-            console.log(allinks[key])
+            // console.log(allinks[key])
             emptyArray.push(allinks[key])
           }
         }
       }
-      console.log(emptyArray)
+      // console.log(emptyArray)
 
 
 
@@ -94,42 +94,74 @@ var RoughTwo = React.createClass({
 
 
 
+
+
       // making the actual request + filtering the undefined objects + 
       // notes: when an argument is missing gives undefined. so filter using boolean hence : var allnews = [a, b].filter(Boolean) 
       // ********************************
       var newsTitle; //this is for notification
+      var doubleCheckNewsOne = [] //saved notification titles 
+      var doubleCheckNewsTwo = []
+
       axios.all(arrayWithAxiosget).then(axios.spread(function (a, b) {
       // console.log(seat.data.articles);
         var allnews = [a, b].filter(Boolean) //filter undefined 
+        console.log(allnews)
+
 
         for (var i = 0; i < allnews.length; i++) {
           var selectednews= allnews[i].data.articles.splice(0, 1)
+          console.log(selectednews)//logs as object
           for (var j = 0; j < selectednews.length; j++) {
-            newsTitle= selectednews[j].title; 
+            newsTitle= selectednews[j].title;
+
+            console.log(newsTitle)
+
+
+            doubleCheckNewsOne.push(newsTitle);
+            doubleCheckNewsTwo.push(newsTitle);
+
+            // console.log(doubleCheckNewsOne)
+            // console.log(doubleCheckNewsTwo)
           };
- 
-
-          //     add notifications
-          // ********************************
-          var notifyMe = function () {
-            if (!("Notification" in window)) {
-              alert("This browser does not support desktop notification");
-            }
-            else if (Notification.permission === "granted") {
-              var notification = new Notification(newsTitle);
-            }
-            else if (Notification.permission !== 'denied') {
-              Notification.requestPermission(function (permission) {
-                if (permission === "granted") {
-                  var notification = new Notification("Hi there can you please add the data to me so I can start showing notifications!");
-                }
-              });
-            }
-          }
-          notifyMe();//part of notification
-
-
         }//closing bracket of for loop
+
+
+        //     add notifications
+            // ********************************
+            var notifyMe = function () {
+              if (!("Notification" in window)) {
+                alert("This browser does not support desktop notification");
+              }
+              else if (Notification.permission === "granted") {
+                for (var i = 0; i < doubleCheckNewsOne.length; i++) {
+                  
+                  var notification = new Notification(doubleCheckNewsOne[i]);
+
+                };
+              }
+              else if (Notification.permission !== 'denied') {
+                Notification.requestPermission(function (permission) {
+                  if (permission === "granted") {
+                    var notification = new Notification("Hi there can you please add the data to me so I can start showing notifications!");
+                  }
+                });
+              }
+            }
+             notifyMe();//part of notification
+
+
+          // // checking if news is same or old
+          // // ********************************
+
+          // if (doubleCheckNewsOne.sort().join() === doubleCheckNewsTwo.sort().join()){
+          //   console.log("no fresh news")
+          //   return;
+          // }
+          // else{
+          //   notifyMe()
+          // }
+
       })).catch(function(error){
         console.log(error) })
       arrayWithAxiosget.splice(0, arrayWithAxiosget.length)// empty the axios request array
@@ -146,6 +178,8 @@ var RoughTwo = React.createClass({
           // emptyarray = [] is empty. everytime a request is made, axios recieved empty array and no promise is returned the second time around. (check this again to see if I'm right?-yup `unexpected identifier` is the error). solutions: this is resolved. used setinterval. works now!!!
 
           //same news is displayed. list of elements in the array is looped in intervals. not the top most news from ch earequest is displayed. solution: added axios.get using foreach . works now!!!
+
+          //logic for checking old news vs fresh news is not working!
 
           //check to see if news data is same and then only display news that are new
 
