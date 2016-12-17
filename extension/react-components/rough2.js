@@ -161,25 +161,22 @@ var RoughTwo = React.createClass({
       arrayWithAxiosget.splice(0, arrayWithAxiosget.length)// empty the axios request array
       console.log(arrayWithAxiosget)
       emptyArray.splice(0, emptyArray.length)//emptying array with similar properties
-    }, 100000) 
+    }, 60000) 
 
 
 
     // checking if news is same or old
     // ********************************
 
-    if (doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
-      console.log("no fresh news")
-      return;
-    }
-    else{
-      console.log("hello")  
-    }
+    // if (doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
+    //   console.log("no fresh news")
+    //   return;
+    // }
+    // else{
+    //   console.log("hello")  
+    // }
 
   },
-
-
-
 
 
         // pseudo: 
@@ -192,7 +189,9 @@ var RoughTwo = React.createClass({
 
           //logic for checking old news vs fresh news is not working!
 
-          //check to see if news data is same and then only display news that are new.. solution:You can use local storage for this
+          //check to see if news data is same and then only display news that are new.. solution:You can use local storage for this(there is chrome storage)
+
+          //notification is not working. use chrome notification api
 
           // localstorage will be used to remember the textbox choices
           //currently, same news gets displayed even after 10 minutes of interval request. So set state again. so it will check and see if any data has changed then it will render new notifications(???) 
