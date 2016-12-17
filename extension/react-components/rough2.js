@@ -67,6 +67,10 @@ var RoughTwo = React.createClass({
     var emptyArray = [];//to store the value of matched properties
     var arrayWithAxiosget = [];// add axios.get before each value
 
+    var newsTitle; //this is for notification
+    var doubleCheckNewsOne = [] //saved notification titles 
+    var doubleCheckNewsTwo = []
+
 
 
 
@@ -99,9 +103,9 @@ var RoughTwo = React.createClass({
       // making the actual request + filtering the undefined objects + 
       // notes: when an argument is missing gives undefined. so filter using boolean hence : var allnews = [a, b].filter(Boolean) 
       // ********************************
-      var newsTitle; //this is for notification
-      var doubleCheckNewsOne = [] //saved notification titles 
-      var doubleCheckNewsTwo = []
+      // var newsTitle; //this is for notification
+      // var doubleCheckNewsOne = [] //saved notification titles 
+      // var doubleCheckNewsTwo = []
 
       axios.all(arrayWithAxiosget).then(axios.spread(function (a, b) {
       // console.log(seat.data.articles);
@@ -115,7 +119,7 @@ var RoughTwo = React.createClass({
           for (var j = 0; j < selectednews.length; j++) {
             newsTitle= selectednews[j].title;
 
-            console.log(newsTitle)
+            console.log(newsTitle);
 
 
             doubleCheckNewsOne.push(newsTitle);
@@ -124,51 +128,58 @@ var RoughTwo = React.createClass({
             // console.log(doubleCheckNewsOne)
             // console.log(doubleCheckNewsTwo)
           };
-        }//closing bracket of for loop
+        }//closing bracket of for loop 
 
+        // add notifications
+        // ********************************
+        var notifyMe = function () {
+          if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+          }
+          else if (Notification.permission === "granted") {
 
-        //     add notifications
-            // ********************************
-            var notifyMe = function () {
-              if (!("Notification" in window)) {
-                alert("This browser does not support desktop notification");
+            for (var i = 0; i < doubleCheckNewsOne.length; i++) {
+              var notification = new Notification(doubleCheckNewsOne[i]);
+            };
+            doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length)//emptying the array
+            doubleCheckNewsTwo.splice(0, doubleCheckNewsTwo.length)//emptying the array
+
+          }
+          else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+              if (permission === "granted") {
+                var notification = new Notification("Hi there can you please add the data to me so I can start showing notifications!");
               }
-              else if (Notification.permission === "granted") {
-                for (var i = 0; i < doubleCheckNewsOne.length; i++) {
-                  
-                  var notification = new Notification(doubleCheckNewsOne[i]);
+            });
+          }
+        }
+        notifyMe();//part of notification
 
-                };
-              }
-              else if (Notification.permission !== 'denied') {
-                Notification.requestPermission(function (permission) {
-                  if (permission === "granted") {
-                    var notification = new Notification("Hi there can you please add the data to me so I can start showing notifications!");
-                  }
-                });
-              }
-            }
-             notifyMe();//part of notification
-
-
-          // // checking if news is same or old
-          // // ********************************
-
-          // if (doubleCheckNewsOne.sort().join() === doubleCheckNewsTwo.sort().join()){
-          //   console.log("no fresh news")
-          //   return;
-          // }
-          // else{
-          //   notifyMe()
-          // }
 
       })).catch(function(error){
         console.log(error) })
       arrayWithAxiosget.splice(0, arrayWithAxiosget.length)// empty the axios request array
       console.log(arrayWithAxiosget)
       emptyArray.splice(0, emptyArray.length)//emptying array with similar properties
-    }, 10000)  
+    }, 100000) 
+
+
+
+    // checking if news is same or old
+    // ********************************
+
+    if (doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
+      console.log("no fresh news")
+      return;
+    }
+    else{
+      console.log("hello")  
+    }
+
   },
+
+
+
 
 
         // pseudo: 
@@ -181,7 +192,7 @@ var RoughTwo = React.createClass({
 
           //logic for checking old news vs fresh news is not working!
 
-          //check to see if news data is same and then only display news that are new
+          //check to see if news data is same and then only display news that are new.. solution:You can use local storage for this
 
           // localstorage will be used to remember the textbox choices
           //currently, same news gets displayed even after 10 minutes of interval request. So set state again. so it will check and see if any data has changed then it will render new notifications(???) 
