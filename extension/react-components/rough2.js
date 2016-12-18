@@ -5,6 +5,9 @@ import {Router, Route, browserHistory, Link, IndexRoute} from 'react-router';
 import  axios from 'axios';
 
 
+// read: This works only with web. Chrome notifications doesn't work with extension plugins 
+
+
 
 var RoughTwo = React.createClass({
 
