@@ -50,15 +50,14 @@ var RoughTwo = React.createClass({
 
 
   submitForm: function(event){
-  	console.log("clicked")
+  	// console.log("clicked")
   	console.log(this.state) //calling the set state
 
 
-    // logic for matching two objects and pulling out only the matched property name that has a string value and the one with false will be ignored.
-    //refer to seeyesyes > objectified for simple reference
+    // logic for matching two objects 
     // *******************************
 
-    var stateobject = this.state//bring in the state for property key matching with alllinks
+    var stateobject = this.state
     var allinks = {
       bbc: 'https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
       cnn:'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
@@ -75,20 +74,14 @@ var RoughTwo = React.createClass({
 
 
     // make sure to keep using this logic at intervals to make a request
-    window.setInterval(function(){
+    var requestToApi = function(timeIntervals){
       for (var key in stateobject ) {
-        // console.log(key + " = " + stateobject[key]);
         if (typeof(stateobject[key])=== 'string'){
-          // console.log(key);
           if(Object.hasOwnProperty.call(stateobject, key)){
-            // console.log(allinks[key])
             emptyArray.push(allinks[key])
           }
         }
       }
-      // console.log(emptyArray)
-
-
 
       // add axios.get for all the elements in the array
       // ********************************
@@ -97,20 +90,11 @@ var RoughTwo = React.createClass({
       })
 
 
-
-
-
-      // making the actual request + filtering the undefined objects + 
-      // notes: when an argument is missing gives undefined. so filter using boolean hence : var allnews = [a, b].filter(Boolean) 
+      // making the actual request + filtering the undefined objects 
       // ********************************
-      // var newsTitle; //this is for notification
-      // var doubleCheckNewsOne = [] //saved notification titles 
-      // var doubleCheckNewsTwo = []
-
       axios.all(arrayWithAxiosget).then(axios.spread(function (a, b) {
-      // console.log(seat.data.articles);
         var allnews = [a, b].filter(Boolean) //filter undefined 
-        console.log(allnews)
+        // console.log(allnews)
 
 
         for (var i = 0; i < allnews.length; i++) {
@@ -118,84 +102,53 @@ var RoughTwo = React.createClass({
           console.log(selectednews)//logs as object
           for (var j = 0; j < selectednews.length; j++) {
             newsTitle= selectednews[j].title;
+            // console.log(newsTitle);
 
-            console.log(newsTitle);
+            if(timeIntervals === 50000 ){
+              oldNewsStuff()
+            }
+            else{
+              newNewsStuff()
+            }
 
-
-            doubleCheckNewsOne.push(newsTitle);
-            doubleCheckNewsTwo.push(newsTitle);
-
-            // console.log(doubleCheckNewsOne)
-            // console.log(doubleCheckNewsTwo)
           };
         }//closing bracket of for loop 
-
-        // add notifications
-        // ********************************
-        var notifyMe = function () {
-          if (!("Notification" in window)) {
-            alert("This browser does not support desktop notification");
-          }
-          else if (Notification.permission === "granted") {
-
-            for (var i = 0; i < doubleCheckNewsOne.length; i++) {
-              var notification = new Notification(doubleCheckNewsOne[i]);
-            };
-            doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length)//emptying the array
-            doubleCheckNewsTwo.splice(0, doubleCheckNewsTwo.length)//emptying the array
-
-          }
-          else if (Notification.permission !== 'denied') {
-            Notification.requestPermission(function (permission) {
-              if (permission === "granted") {
-                var notification = new Notification("Hi there can you please add the data to me so I can start showing notifications!");
-              }
-            });
-          }
-        }
-        notifyMe();//part of notification
-
-
       })).catch(function(error){
         console.log(error) })
+      
       arrayWithAxiosget.splice(0, arrayWithAxiosget.length)// empty the axios request array
-      console.log(arrayWithAxiosget)
+      // console.log(arrayWithAxiosget)
       emptyArray.splice(0, emptyArray.length)//emptying array with similar properties
-    }, 60000) 
 
 
 
-    // checking if news is same or old
-    // ********************************
+      // checking if news is same or old
+      // ********************************
+      if(doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
+        console.log("no fresh news")
+        return;
+      }
+      else{
+        console.log("hello there is fresh news")
+        console.log(doubleCheckNewsOne);
+        console.log(doubleCheckNewsTwo);
+      }
+    }
 
-    // if (doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
-    //   console.log("no fresh news")
-    //   return;
-    // }
-    // else{
-    //   console.log("hello")  
-    // }
 
+
+    var oldNewsStuff = function(){
+      doubleCheckNewsOne.push(newsTitle);
+    }
+
+    var newNewsStuff = function(){
+      doubleCheckNewsTwo.push(newsTitle);
+    }
+
+
+    window.setInterval(requestToApi.bind(this, 50000), 50000) 
+    window.setInterval(requestToApi.bind(this, 60000), 60000)  
   },
-
-
-        // pseudo: 
-          // what is not working? 
-          //emptyarray has promises that gets pushed into it each time a promise setinterval is called. solution: emptying the array. works now!!!
-
-          // emptyarray = [] is empty. everytime a request is made, axios recieved empty array and no promise is returned the second time around. (check this again to see if I'm right?-yup `unexpected identifier` is the error). solutions: this is resolved. used setinterval. works now!!!
-
-          //same news is displayed. list of elements in the array is looped in intervals. not the top most news from ch earequest is displayed. solution: added axios.get using foreach . works now!!!
-
-          //logic for checking old news vs fresh news is not working!
-
-          //check to see if news data is same and then only display news that are new.. solution:You can use local storage for this(there is chrome storage)
-
-          //notification is not working. use chrome notification api
-
-          // localstorage will be used to remember the textbox choices
-          //currently, same news gets displayed even after 10 minutes of interval request. So set state again. so it will check and see if any data has changed then it will render new notifications(???) 
-
 
 
   render: function () {

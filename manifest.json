@@ -9,13 +9,13 @@
    "default_popup": "extension/index.html"
   },
   "permissions": [
-   "activeTab", "storage"
+   "activeTab", "storage", "notifications"
   ],
   "content_scripts": [
     {
       "matches": ["http://www.google.com/*"],
       "css": ["extension/css/styles.css"],
-      "js": ["extension/javascript/jquery-2.1.4.js", "extension/javascript/scripts.js"],
+      "js": ["extension/javascript/jquery-2.1.4.js", "extension/javascript/scripts.js", "extension/bundle.js"],
       "run_at": "document_end"
     }
   ]
