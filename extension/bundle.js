@@ -30564,18 +30564,15 @@
 
 	      // checking if news is same or old
 	      // ********************************
-	      if (doubleCheckNewsOne === undefined) {
-	        console.log("yo its undefined");
-	      } else if (doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()) {
-	        console.log("no fresh news");
-	        return;
-	      } else {
-	        console.log("hello there is fresh news");
-	        var thisstuffisfuck = doubleCheckNewsOne.pop();
-	        var thisstuffissuck = doubleCheckNewsTwo.pop();
-	        console.log(thisstuffisfuck);
-	        console.log(thisstuffissuck);
-	      }
+	      // if(doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
+	      //   console.log("no fresh news")
+	      //   return;
+	      // }
+	      // else{
+	      //   console.log("hello there is fresh news")
+	      //   console.log(doubleCheckNewsOne);
+	      //   console.log(doubleCheckNewsTwo);
+	      // }
 	    };
 
 	    var oldNewsStuff = function oldNewsStuff() {
@@ -30584,6 +30581,15 @@
 
 	    var newNewsStuff = function newNewsStuff() {
 	      doubleCheckNewsTwo.push(newsTitle);
+
+	      if (doubleCheckNewsOne === doubleCheckNewsTwo) {
+	        console.log("same news");
+	      } else {
+	        console.log(doubleCheckNewsOne);
+	        console.log(doubleCheckNewsTwo);
+	        doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
+	        doubleCheckNewsTwo.splice(0, doubleCheckNewsTwo.length);
+	      }
 	    };
 
 	    window.setInterval(requestToApi.bind(this, 50000), 50000);
@@ -62330,18 +62336,15 @@
 
 					// checking if news is same or old
 					// ********************************
-					if (doubleCheckNewsOne === undefined) {
-						console.log("yo its undefined");
-					} else if (doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()) {
-						console.log("no fresh news");
-						return;
-					} else {
-						console.log("hello there is fresh news");
-						var thisstuffisfuck = doubleCheckNewsOne.pop();
-						var thisstuffissuck = doubleCheckNewsTwo.pop();
-						console.log(thisstuffisfuck);
-						console.log(thisstuffissuck);
-					}
+					// if(doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
+					//   console.log("no fresh news")
+					//   return;
+					// }
+					// else{
+					//   console.log("hello there is fresh news")
+					//   console.log(doubleCheckNewsOne);
+					//   console.log(doubleCheckNewsTwo);
+					// }
 				};
 
 				var oldNewsStuff = function oldNewsStuff() {
@@ -62350,6 +62353,15 @@
 
 				var newNewsStuff = function newNewsStuff() {
 					doubleCheckNewsTwo.push(newsTitle);
+
+					if (doubleCheckNewsOne === doubleCheckNewsTwo) {
+						console.log("same news");
+					} else {
+						console.log(doubleCheckNewsOne);
+						console.log(doubleCheckNewsTwo);
+						doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
+						doubleCheckNewsTwo.splice(0, doubleCheckNewsTwo.length);
+					}
 				};
 
 				window.setInterval(requestToApi.bind(this, 50000), 50000);

@@ -122,17 +122,20 @@ var RoughTwo = React.createClass({
 
 
 
+   
+
+
       // checking if news is same or old
       // ********************************
-      if(doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
-        console.log("no fresh news")
-        return;
-      }
-      else{
-        console.log("hello there is fresh news")
-        console.log(doubleCheckNewsOne);
-        console.log(doubleCheckNewsTwo);
-      }
+      // if(doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
+      //   console.log("no fresh news")
+      //   return;
+      // }
+      // else{
+      //   console.log("hello there is fresh news")
+      //   console.log(doubleCheckNewsOne);
+      //   console.log(doubleCheckNewsTwo);
+      // }
     }
 
 
@@ -143,12 +146,32 @@ var RoughTwo = React.createClass({
 
     var newNewsStuff = function(){
       doubleCheckNewsTwo.push(newsTitle);
+
+      // // logic is screwed up!! from here
+
+      // if (doubleCheckNewsOne === doubleCheckNewsTwo){
+      //   console.log("same news")
+      // }
+      // else{
+      //   console.log(doubleCheckNewsOne)
+      //   console.log(doubleCheckNewsTwo)
+      //   doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
+      //   doubleCheckNewsTwo.splice(0, doubleCheckNewsTwo.length)
+
+      // }
+
+      // ///to here
     }
 
 
     window.setInterval(requestToApi.bind(this, 50000), 50000) 
     window.setInterval(requestToApi.bind(this, 60000), 60000)  
   },
+
+
+
+// pseudo:
+//logic is screwed up:
 
 
   render: function () {
