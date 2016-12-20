@@ -67,10 +67,13 @@ var RoughTwo = React.createClass({
     var arrayWithAxiosget = [];// add axios.get before each value
 
     var newsTitle; //this is for notification
-    var doubleCheckNewsOne = [] //saved notification titles 
-    var doubleCheckNewsTwo = []
 
 
+
+    // use dummy data to set initially
+    chrome.storage.sync.set({'oldNews': ["dummy data", "dummy data"]}, function() {
+      console.log('dummy data saved saved');
+    });
 
 
     // make sure to keep using this logic at intervals to make a request
@@ -96,6 +99,9 @@ var RoughTwo = React.createClass({
         var allnews = [a, b].filter(Boolean) //filter undefined 
         // console.log(allnews)
 
+        var doubleCheckNewsOne = [] //saved notification titles 
+        var doubleCheckNewsTwo = []
+
 
         for (var i = 0; i < allnews.length; i++) {
           var selectednews= allnews[i].data.articles.splice(0, 1)
@@ -103,16 +109,47 @@ var RoughTwo = React.createClass({
           for (var j = 0; j < selectednews.length; j++) {
             newsTitle= selectednews[j].title;
             // console.log(newsTitle);
-
-            if(timeIntervals === 50000 ){
-              oldNewsStuff()
-            }
-            else{
-              newNewsStuff()
-            }
-
+            doubleCheckNewsOne.push(newsTitle);
           };
-        }//closing bracket of for loop 
+        }//closing bracket of for loop
+
+
+
+        // get this news for storage
+        chrome.storage.sync.get('oldNews', function(result){
+          console.log(result)
+          if ( result.oldNews !== doubleCheckNewsOne){
+            console.log("news is not the same")
+
+            chrome.storage.sync.set({'oldNews': doubleCheckNewsOne}, function() {
+              console.log('news is saved + send a push notification of doubleCheckNewsOne');
+            })
+
+            doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length)
+          }
+          else{
+            console.log("sameold news dont do anything");
+            return;
+          }
+        })
+
+
+        // chrome.storage.sync.get('oldNews', function(result){
+        //   console.log(result)
+        //   if (["dummydata", "dummy"] !== ["doubleCheck", "eckNewsOne"]){
+        //     console.log("news is not the same")
+
+        //     chrome.storage.sync.set({'oldNews': ["doubleCheck", "eckNewsOne"]}, function() {
+        //       console.log('news is saved + send a push notification of "doubleCheck", "eckNewsOne"');
+        //     })
+
+        //     []//emptied
+        //   }
+        //   else{
+
+        //   }
+        // })
+
       })).catch(function(error){
         console.log(error) })
       
@@ -120,52 +157,12 @@ var RoughTwo = React.createClass({
       // console.log(arrayWithAxiosget)
       emptyArray.splice(0, emptyArray.length)//emptying array with similar properties
 
-
-
-   
-
-
-      // checking if news is same or old
-      // ********************************
-      // if(doubleCheckNewsOne.sort().join() !== doubleCheckNewsTwo.sort().join()){
-      //   console.log("no fresh news")
-      //   return;
-      // }
-      // else{
-      //   console.log("hello there is fresh news")
-      //   console.log(doubleCheckNewsOne);
-      //   console.log(doubleCheckNewsTwo);
-      // }
     }
 
-
-
-    var oldNewsStuff = function(){
-      doubleCheckNewsOne.push(newsTitle);
-    }
-
-    var newNewsStuff = function(){
-      doubleCheckNewsTwo.push(newsTitle);
-
-      // // logic is screwed up!! from here
-
-      // if (doubleCheckNewsOne === doubleCheckNewsTwo){
-      //   console.log("same news")
-      // }
-      // else{
-      //   console.log(doubleCheckNewsOne)
-      //   console.log(doubleCheckNewsTwo)
-      //   doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
-      //   doubleCheckNewsTwo.splice(0, doubleCheckNewsTwo.length)
-
-      // }
-
-      // ///to here
-    }
-
-
-    window.setInterval(requestToApi.bind(this, 50000), 50000) 
-    window.setInterval(requestToApi.bind(this, 60000), 60000)  
+    window.setInterval(requestToApi.bind(this, 50000), 50000)
+    // window.setInterval(requestToApi.bind(this, 80000), 80000, (1))
+    // window.setInterval(requestToApi.bind(this, 90000), 90000, (2))  
+  
   },
 
 
