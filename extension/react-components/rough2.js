@@ -63,18 +63,20 @@ var RoughTwo = React.createClass({
       cnn:'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
       ap: 'https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'
     }
+
+    // variables used
+    //********************************
+
     var emptyArray = [];//to store the value of matched properties
     var arrayWithAxiosget = [];// add axios.get before each value
     var doubleCheckNewsOne = [] //saved notification titles 
-    var joinToSingleString = []
-
+    var joinToSingleString = [] //to join news into one single string
     var newsTitle; //this is for notification
 
 
 
-    // use dummy data to set initially
-
-
+    // use dummy data to set inside the chrome storage initially
+    //********************************
     chrome.storage.sync.clear(function(){
       console.log("cleared")
     })
@@ -85,6 +87,8 @@ var RoughTwo = React.createClass({
 
 
     // make sure to keep using this logic at intervals to make a request
+    //********************************
+
     var requestToApi = function(timeIntervals){
       for (var key in stateobject ) {
         if (typeof(stateobject[key])=== 'string'){
@@ -115,14 +119,17 @@ var RoughTwo = React.createClass({
             newsTitle= selectednews[j].title;
             // console.log(newsTitle);
             doubleCheckNewsOne.push(newsTitle);
+            // console.log(doubleCheckNewsOne)
             joinToSingleString = doubleCheckNewsOne.join()
-            console.log(joinToSingleString)
+            // console.log(joinToSingleString) 
           };
         }//closing bracket of for loop
 
 
 
-        // get news for chrome storage
+        // chrome storage get and set new values
+        //***************************************
+
         chrome.storage.sync.get('oldNews', function(result){
           console.log(result)
           // console.log(doubleCheckNewsOne)
@@ -132,17 +139,15 @@ var RoughTwo = React.createClass({
               console.log('news is saved + send a push notification of doubleCheckNewsOne');
 
 
-              // promises
+              // Using promises, since doublechecnews was getting emptied even before the loop was being run
               // **********************
 
               var firstWork = function(){
                 return new Promise(function(resolve, reject){
                   for (var i = 0; i < doubleCheckNewsOne.length; i++) {
 
-                    // chrome notification
-                    // *********
-
-                    // var id = "0"
+                    // invoking the chrome notification
+                    // ********************
                     chrome.notifications.create(
                       {
                         type: "basic",
@@ -155,7 +160,6 @@ var RoughTwo = React.createClass({
                       }
                     )
 
-
                     resolve('First promise function');
                   }
                })
@@ -166,7 +170,7 @@ var RoughTwo = React.createClass({
               var secondWork = function(){  
                 return new Promise(function(resolve, reject){
                   doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length)
-                  // joinToSingleString.splice(0, joinToSingleString.length)
+                  joinToSingleString = null; //assign null 
                   resolve('First promise function');   
                 })
               }
@@ -175,19 +179,19 @@ var RoughTwo = React.createClass({
 
               firstWork().then(function(firstWorkResult){
                 console.log(firstWorkResult)
-                return secondWork() //make sure to return the next function 
+                return secondWork() 
               }).then(function(secondWorkResult){
                 console.log(secondWorkResult)
-                 //make sure to return the next function
               })
 
-              // ************************  
+              // *********end of promise***************  
     
-            })
+            })//closing bracket for chrome storage
   
           }
           else{
             console.log("sameold news dont do anything");
+            doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length)
             return; 
           }
         })
@@ -200,18 +204,14 @@ var RoughTwo = React.createClass({
       // console.log(arrayWithAxiosget)
       emptyArray.splice(0, emptyArray.length)//emptying array with similar properties
 
+      // console.log("I log null:" +  joinToSingleString)
+
     }
 
     window.setInterval(requestToApi.bind(this, 50000), 50000)
-    // window.setInterval(requestToApi.bind(this, 80000), 80000, (1))
-    // window.setInterval(requestToApi.bind(this, 90000), 90000, (2))  
   
   },
 
-
-
-// pseudo:
-//logic is screwed up:
 
 
   render: function () {

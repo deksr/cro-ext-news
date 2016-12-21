@@ -30558,13 +30558,14 @@
 	            newsTitle = selectednews[j].title;
 	            // console.log(newsTitle);
 	            doubleCheckNewsOne.push(newsTitle);
+	            console.log(doubleCheckNewsOne);
 	            joinToSingleString = doubleCheckNewsOne.join();
-	            console.log(joinToSingleString);
+	            console.log(joinToSingleString); //this is where you need to change joinToSingleString is showing: ["hgjgjhjhj jhgjhgjhghj hgjgjhjhj jhgjhgjhghj"]
 	          };
 	        } //closing bracket of for loop
 
 
-	        // get this news for storage
+	        // get news for chrome storage
 	        chrome.storage.sync.get('oldNews', function (result) {
 	          console.log(result);
 	          // console.log(doubleCheckNewsOne)
@@ -30574,13 +30575,13 @@
 	              console.log('news is saved + send a push notification of doubleCheckNewsOne');
 
 	              // promises
-	              // *********
+	              // **********************
 
 	              var firstWork = function firstWork() {
 	                return new Promise(function (resolve, reject) {
 	                  for (var i = 0; i < doubleCheckNewsOne.length; i++) {
 
-	                    // notification
+	                    // chrome notification
 	                    // *********
 
 	                    // var id = "0"
@@ -30601,7 +30602,7 @@
 	              var secondWork = function secondWork() {
 	                return new Promise(function (resolve, reject) {
 	                  doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
-	                  // joinToSingleString.splice(0, joinToSingleString.length)
+	                  joinToSingleString = null;
 	                  resolve('First promise function');
 	                });
 	              };
@@ -30613,14 +30614,12 @@
 	                console.log(secondWorkResult);
 	                //make sure to return the next function
 	              });
+
+	              // ************************  
 	            });
-
-	            // doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length)
-	            // // joinToSingleString.splice(0, joinToSingleString.length)
-
 	          } else {
-
 	            console.log("sameold news dont do anything");
+	            doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
 	            return;
 	          }
 	        });
@@ -30631,6 +30630,8 @@
 	      arrayWithAxiosget.splice(0, arrayWithAxiosget.length); // empty the axios request array
 	      // console.log(arrayWithAxiosget)
 	      emptyArray.splice(0, emptyArray.length); //emptying array with similar properties
+
+	      console.log("hey hy look-" + joinToSingleString);
 	    };
 
 	    window.setInterval(requestToApi.bind(this, 50000), 50000);
@@ -30638,8 +30639,7 @@
 	    // window.setInterval(requestToApi.bind(this, 90000), 90000, (2))  
 	  },
 
-	  // pseudo:
-	  //logic is screwed up:
+	  //  pseudo: what is not working?
 
 
 	  render: function render() {
@@ -62376,13 +62376,14 @@
 								newsTitle = selectednews[j].title;
 								// console.log(newsTitle);
 								doubleCheckNewsOne.push(newsTitle);
+								console.log(doubleCheckNewsOne);
 								joinToSingleString = doubleCheckNewsOne.join();
-								console.log(joinToSingleString);
+								console.log(joinToSingleString); //this is where you need to change joinToSingleString is showing: ["hgjgjhjhj jhgjhgjhghj hgjgjhjhj jhgjhgjhghj"]
 							};
 						} //closing bracket of for loop
 
 
-						// get this news for storage
+						// get news for chrome storage
 						chrome.storage.sync.get('oldNews', function (result) {
 							console.log(result);
 							// console.log(doubleCheckNewsOne)
@@ -62392,13 +62393,13 @@
 									console.log('news is saved + send a push notification of doubleCheckNewsOne');
 
 									// promises
-									// *********
+									// **********************
 
 									var firstWork = function firstWork() {
 										return new Promise(function (resolve, reject) {
 											for (var i = 0; i < doubleCheckNewsOne.length; i++) {
 
-												// notification
+												// chrome notification
 												// *********
 
 												// var id = "0"
@@ -62419,7 +62420,7 @@
 									var secondWork = function secondWork() {
 										return new Promise(function (resolve, reject) {
 											doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
-											// joinToSingleString.splice(0, joinToSingleString.length)
+											joinToSingleString = null;
 											resolve('First promise function');
 										});
 									};
@@ -62431,13 +62432,12 @@
 										console.log(secondWorkResult);
 										//make sure to return the next function
 									});
+
+									// ************************  
 								});
-
-								// doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length)
-								// // joinToSingleString.splice(0, joinToSingleString.length)
 							} else {
-
 								console.log("sameold news dont do anything");
+								doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
 								return;
 							}
 						});
@@ -62448,6 +62448,8 @@
 					arrayWithAxiosget.splice(0, arrayWithAxiosget.length); // empty the axios request array
 					// console.log(arrayWithAxiosget)
 					emptyArray.splice(0, emptyArray.length); //emptying array with similar properties
+
+					console.log("hey hy look-" + joinToSingleString);
 				};
 
 				window.setInterval(requestToApi.bind(this, 50000), 50000);
@@ -62455,8 +62457,7 @@
 				// window.setInterval(requestToApi.bind(this, 90000), 90000, (2))  
 			},
 
-			// pseudo:
-			//logic is screwed up:
+			//  pseudo: what is not working?
 
 
 			render: function render() {
