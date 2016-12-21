@@ -30511,11 +30511,19 @@
 	    };
 	    var emptyArray = []; //to store the value of matched properties
 	    var arrayWithAxiosget = []; // add axios.get before each value
+	    var doubleCheckNewsOne = []; //saved notification titles 
+	    var joinToSingleString = [];
 
 	    var newsTitle; //this is for notification
 
 
 	    // use dummy data to set initially
+
+
+	    chrome.storage.sync.clear(function () {
+	      console.log("cleared");
+	    });
+
 	    chrome.storage.sync.set({ 'oldNews': ["dummy data", "dummy data"] }, function () {
 	      console.log('dummy data saved saved');
 	    });
@@ -30542,8 +30550,6 @@
 	        var allnews = [a, b].filter(Boolean); //filter undefined 
 	        // console.log(allnews)
 
-	        var doubleCheckNewsOne = []; //saved notification titles 
-	        var doubleCheckNewsTwo = [];
 
 	        for (var i = 0; i < allnews.length; i++) {
 	          var selectednews = allnews[i].data.articles.splice(0, 1);
@@ -30552,43 +30558,72 @@
 	            newsTitle = selectednews[j].title;
 	            // console.log(newsTitle);
 	            doubleCheckNewsOne.push(newsTitle);
+	            joinToSingleString = doubleCheckNewsOne.join();
+	            console.log(joinToSingleString);
 	          };
 	        } //closing bracket of for loop
 
 
 	        // get this news for storage
-
 	        chrome.storage.sync.get('oldNews', function (result) {
 	          console.log(result);
-	          if (result.oldNews !== doubleCheckNewsOne) {
-	            console.log("news is not the same");
+	          // console.log(doubleCheckNewsOne)
+	          if (result.oldNews !== joinToSingleString) {
 
-	            chrome.storage.sync.set({ 'oldNews': doubleCheckNewsOne }, function () {
-	              console.log('news is saved + send a push notification of "doubleCheck", "eckNewsOne"');
+	            chrome.storage.sync.set({ 'oldNews': joinToSingleString }, function () {
+	              console.log('news is saved + send a push notification of doubleCheckNewsOne');
+
+	              // promises
+	              // *********
+
+	              var firstWork = function firstWork() {
+	                return new Promise(function (resolve, reject) {
+	                  for (var i = 0; i < doubleCheckNewsOne.length; i++) {
+
+	                    // notification
+	                    // *********
+
+	                    // var id = "0"
+	                    chrome.notifications.create({
+	                      type: "basic",
+	                      title: doubleCheckNewsOne[i],
+	                      message: "world",
+	                      iconUrl: "img/chro-ext-news-logo.png"
+	                    }, function () {
+	                      console.log("notification posted");
+	                    });
+
+	                    resolve('First promise function');
+	                  }
+	                });
+	              };
+
+	              var secondWork = function secondWork() {
+	                return new Promise(function (resolve, reject) {
+	                  doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
+	                  // joinToSingleString.splice(0, joinToSingleString.length)
+	                  resolve('First promise function');
+	                });
+	              };
+
+	              firstWork().then(function (firstWorkResult) {
+	                console.log(firstWorkResult);
+	                return secondWork(); //make sure to return the next function 
+	              }).then(function (secondWorkResult) {
+	                console.log(secondWorkResult);
+	                //make sure to return the next function
+	              });
 	            });
 
-	            doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
+	            // doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length)
+	            // // joinToSingleString.splice(0, joinToSingleString.length)
+
 	          } else {
+
 	            console.log("sameold news dont do anything");
 	            return;
 	          }
 	        });
-
-	        // chrome.storage.sync.get('oldNews', function(result){
-	        //   console.log(result)
-	        //   if (["dummydata", "dummy"] !== ["doubleCheck", "eckNewsOne"]){
-	        //     console.log("news is not the same")
-
-	        //     chrome.storage.sync.set({'oldNews': ["doubleCheck", "eckNewsOne"]}, function() {
-	        //       console.log('news is saved + send a push notification of "doubleCheck", "eckNewsOne"');
-	        //     })
-
-	        //     []//emptied
-	        //   }
-	        //   else{
-
-	        //   }
-	        // })
 	      })).catch(function (error) {
 	        console.log(error);
 	      });
@@ -62294,11 +62329,19 @@
 				};
 				var emptyArray = []; //to store the value of matched properties
 				var arrayWithAxiosget = []; // add axios.get before each value
+				var doubleCheckNewsOne = []; //saved notification titles 
+				var joinToSingleString = [];
 
 				var newsTitle; //this is for notification
 
 
 				// use dummy data to set initially
+
+
+				chrome.storage.sync.clear(function () {
+					console.log("cleared");
+				});
+
 				chrome.storage.sync.set({ 'oldNews': ["dummy data", "dummy data"] }, function () {
 					console.log('dummy data saved saved');
 				});
@@ -62325,8 +62368,6 @@
 						var allnews = [a, b].filter(Boolean); //filter undefined 
 						// console.log(allnews)
 
-						var doubleCheckNewsOne = []; //saved notification titles 
-						var doubleCheckNewsTwo = [];
 
 						for (var i = 0; i < allnews.length; i++) {
 							var selectednews = allnews[i].data.articles.splice(0, 1);
@@ -62335,43 +62376,71 @@
 								newsTitle = selectednews[j].title;
 								// console.log(newsTitle);
 								doubleCheckNewsOne.push(newsTitle);
+								joinToSingleString = doubleCheckNewsOne.join();
+								console.log(joinToSingleString);
 							};
 						} //closing bracket of for loop
 
 
 						// get this news for storage
-
 						chrome.storage.sync.get('oldNews', function (result) {
 							console.log(result);
-							if (result.oldNews !== doubleCheckNewsOne) {
-								console.log("news is not the same");
+							// console.log(doubleCheckNewsOne)
+							if (result.oldNews !== joinToSingleString) {
 
-								chrome.storage.sync.set({ 'oldNews': doubleCheckNewsOne }, function () {
-									console.log('news is saved + send a push notification of "doubleCheck", "eckNewsOne"');
+								chrome.storage.sync.set({ 'oldNews': joinToSingleString }, function () {
+									console.log('news is saved + send a push notification of doubleCheckNewsOne');
+
+									// promises
+									// *********
+
+									var firstWork = function firstWork() {
+										return new Promise(function (resolve, reject) {
+											for (var i = 0; i < doubleCheckNewsOne.length; i++) {
+
+												// notification
+												// *********
+
+												// var id = "0"
+												chrome.notifications.create({
+													type: "basic",
+													title: doubleCheckNewsOne[i],
+													message: "world",
+													iconUrl: "img/chro-ext-news-logo.png"
+												}, function () {
+													console.log("notification posted");
+												});
+
+												resolve('First promise function');
+											}
+										});
+									};
+
+									var secondWork = function secondWork() {
+										return new Promise(function (resolve, reject) {
+											doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
+											// joinToSingleString.splice(0, joinToSingleString.length)
+											resolve('First promise function');
+										});
+									};
+
+									firstWork().then(function (firstWorkResult) {
+										console.log(firstWorkResult);
+										return secondWork(); //make sure to return the next function 
+									}).then(function (secondWorkResult) {
+										console.log(secondWorkResult);
+										//make sure to return the next function
+									});
 								});
 
-								doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
+								// doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length)
+								// // joinToSingleString.splice(0, joinToSingleString.length)
 							} else {
+
 								console.log("sameold news dont do anything");
 								return;
 							}
 						});
-
-						// chrome.storage.sync.get('oldNews', function(result){
-						//   console.log(result)
-						//   if (["dummydata", "dummy"] !== ["doubleCheck", "eckNewsOne"]){
-						//     console.log("news is not the same")
-
-						//     chrome.storage.sync.set({'oldNews': ["doubleCheck", "eckNewsOne"]}, function() {
-						//       console.log('news is saved + send a push notification of "doubleCheck", "eckNewsOne"');
-						//     })
-
-						//     []//emptied
-						//   }
-						//   else{
-
-						//   }
-						// })
 					})).catch(function (error) {
 						console.log(error);
 					});
