@@ -213,6 +213,10 @@ var RoughTwo = React.createClass({
   },
 
 
+// pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
+//2. remember the checkd inboxes even when the browser is closed. 
+
+
 
   render: function () {
     return (
