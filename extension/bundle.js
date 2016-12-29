@@ -30470,6 +30470,13 @@
 	    };
 	  },
 
+	  componentDidMount: function componentDidMount() {
+
+	    chrome.storage.sync.get('oldNews', function (result) {
+	      console.log(result);
+	    });
+	  },
+
 	  sendCheckBoxValue: function sendCheckBoxValue(event, type) {
 	    console.log(event.target.checked);
 	    console.log(event.target.value);
@@ -30500,6 +30507,26 @@
 	    console.log(this.state); //calling the set state
 
 
+	    // variables used
+	    //********************************
+
+	    var emptyArray = []; //to store the value of matched properties
+	    var arrayWithAxiosget = []; // add axios.get before each value
+	    var doubleCheckNewsOne = []; //saved notification titles 
+	    var joinToSingleString = []; //to join news into one single string
+	    var newsTitle; //this is for notification
+
+
+	    // use dummy data to set inside the chrome storage initially
+	    //********************************
+	    chrome.storage.sync.clear(function () {
+	      console.log("cleared");
+	    });
+
+	    chrome.storage.sync.set({ 'oldNews': ["dummy data", "dummy data"] }, function () {
+	      console.log('dummy data saved saved');
+	    });
+
 	    // logic for matching two objects 
 	    // *******************************
 
@@ -30509,26 +30536,10 @@
 	      cnn: 'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
 	      ap: 'https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'
 	    };
-	    var emptyArray = []; //to store the value of matched properties
-	    var arrayWithAxiosget = []; // add axios.get before each value
-	    var doubleCheckNewsOne = []; //saved notification titles 
-	    var joinToSingleString = [];
-
-	    var newsTitle; //this is for notification
-
-
-	    // use dummy data to set initially
-
-
-	    chrome.storage.sync.clear(function () {
-	      console.log("cleared");
-	    });
-
-	    chrome.storage.sync.set({ 'oldNews': ["dummy data", "dummy data"] }, function () {
-	      console.log('dummy data saved saved');
-	    });
 
 	    // make sure to keep using this logic at intervals to make a request
+	    //********************************
+
 	    var requestToApi = function requestToApi(timeIntervals) {
 	      for (var key in stateobject) {
 	        if (typeof stateobject[key] === 'string') {
@@ -30558,33 +30569,34 @@
 	            newsTitle = selectednews[j].title;
 	            // console.log(newsTitle);
 	            doubleCheckNewsOne.push(newsTitle);
-	            console.log(doubleCheckNewsOne);
+	            // console.log(doubleCheckNewsOne)
 	            joinToSingleString = doubleCheckNewsOne.join();
-	            console.log(joinToSingleString); //this is where you need to change joinToSingleString is showing: ["hgjgjhjhj jhgjhgjhghj hgjgjhjhj jhgjhgjhghj"]
+	            console.log(joinToSingleString);
 	          };
 	        } //closing bracket of for loop
 
 
-	        // get news for chrome storage
+	        // chrome storage get and set new values
+	        //***************************************
+
 	        chrome.storage.sync.get('oldNews', function (result) {
-	          console.log(result);
+	          console.log(result); //this brings out the dummy data 
+
 	          // console.log(doubleCheckNewsOne)
 	          if (result.oldNews !== joinToSingleString) {
 
 	            chrome.storage.sync.set({ 'oldNews': joinToSingleString }, function () {
 	              console.log('news is saved + send a push notification of doubleCheckNewsOne');
 
-	              // promises
+	              // Using promises, since doublechecnews was getting emptied even before the loop was being run
 	              // **********************
 
 	              var firstWork = function firstWork() {
 	                return new Promise(function (resolve, reject) {
 	                  for (var i = 0; i < doubleCheckNewsOne.length; i++) {
 
-	                    // chrome notification
-	                    // *********
-
-	                    // var id = "0"
+	                    // invoking the chrome notification
+	                    // ********************
 	                    chrome.notifications.create({
 	                      type: "basic",
 	                      title: doubleCheckNewsOne[i],
@@ -30602,21 +30614,20 @@
 	              var secondWork = function secondWork() {
 	                return new Promise(function (resolve, reject) {
 	                  doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
-	                  joinToSingleString = null;
+	                  joinToSingleString = null; //assign null 
 	                  resolve('First promise function');
 	                });
 	              };
 
 	              firstWork().then(function (firstWorkResult) {
 	                console.log(firstWorkResult);
-	                return secondWork(); //make sure to return the next function 
+	                return secondWork();
 	              }).then(function (secondWorkResult) {
 	                console.log(secondWorkResult);
-	                //make sure to return the next function
 	              });
 
-	              // ************************  
-	            });
+	              // *********end of promise***************  
+	            }); //closing bracket for chrome storage
 	          } else {
 	            console.log("sameold news dont do anything");
 	            doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
@@ -30631,15 +30642,14 @@
 	      // console.log(arrayWithAxiosget)
 	      emptyArray.splice(0, emptyArray.length); //emptying array with similar properties
 
-	      console.log("hey hy look-" + joinToSingleString);
+	      // console.log("I log null:" +  joinToSingleString)
 	    };
 
 	    window.setInterval(requestToApi.bind(this, 50000), 50000);
-	    // window.setInterval(requestToApi.bind(this, 80000), 80000, (1))
-	    // window.setInterval(requestToApi.bind(this, 90000), 90000, (2))  
 	  },
 
-	  //  pseudo: what is not working?
+	  // pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
+	  //2. remember the checkd inboxes even when the browser is closed. 
 
 
 	  render: function render() {
@@ -62288,6 +62298,13 @@
 				};
 			},
 
+			componentDidMount: function componentDidMount() {
+
+				chrome.storage.sync.get('oldNews', function (result) {
+					console.log(result);
+				});
+			},
+
 			sendCheckBoxValue: function sendCheckBoxValue(event, type) {
 				console.log(event.target.checked);
 				console.log(event.target.value);
@@ -62318,6 +62335,26 @@
 				console.log(this.state); //calling the set state
 
 
+				// variables used
+				//********************************
+
+				var emptyArray = []; //to store the value of matched properties
+				var arrayWithAxiosget = []; // add axios.get before each value
+				var doubleCheckNewsOne = []; //saved notification titles 
+				var joinToSingleString = []; //to join news into one single string
+				var newsTitle; //this is for notification
+
+
+				// use dummy data to set inside the chrome storage initially
+				//********************************
+				chrome.storage.sync.clear(function () {
+					console.log("cleared");
+				});
+
+				chrome.storage.sync.set({ 'oldNews': ["dummy data", "dummy data"] }, function () {
+					console.log('dummy data saved saved');
+				});
+
 				// logic for matching two objects 
 				// *******************************
 
@@ -62327,26 +62364,10 @@
 					cnn: 'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
 					ap: 'https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'
 				};
-				var emptyArray = []; //to store the value of matched properties
-				var arrayWithAxiosget = []; // add axios.get before each value
-				var doubleCheckNewsOne = []; //saved notification titles 
-				var joinToSingleString = [];
-
-				var newsTitle; //this is for notification
-
-
-				// use dummy data to set initially
-
-
-				chrome.storage.sync.clear(function () {
-					console.log("cleared");
-				});
-
-				chrome.storage.sync.set({ 'oldNews': ["dummy data", "dummy data"] }, function () {
-					console.log('dummy data saved saved');
-				});
 
 				// make sure to keep using this logic at intervals to make a request
+				//********************************
+
 				var requestToApi = function requestToApi(timeIntervals) {
 					for (var key in stateobject) {
 						if (typeof stateobject[key] === 'string') {
@@ -62376,33 +62397,34 @@
 								newsTitle = selectednews[j].title;
 								// console.log(newsTitle);
 								doubleCheckNewsOne.push(newsTitle);
-								console.log(doubleCheckNewsOne);
+								// console.log(doubleCheckNewsOne)
 								joinToSingleString = doubleCheckNewsOne.join();
-								console.log(joinToSingleString); //this is where you need to change joinToSingleString is showing: ["hgjgjhjhj jhgjhgjhghj hgjgjhjhj jhgjhgjhghj"]
+								console.log(joinToSingleString);
 							};
 						} //closing bracket of for loop
 
 
-						// get news for chrome storage
+						// chrome storage get and set new values
+						//***************************************
+
 						chrome.storage.sync.get('oldNews', function (result) {
-							console.log(result);
+							console.log(result); //this brings out the dummy data 
+
 							// console.log(doubleCheckNewsOne)
 							if (result.oldNews !== joinToSingleString) {
 
 								chrome.storage.sync.set({ 'oldNews': joinToSingleString }, function () {
 									console.log('news is saved + send a push notification of doubleCheckNewsOne');
 
-									// promises
+									// Using promises, since doublechecnews was getting emptied even before the loop was being run
 									// **********************
 
 									var firstWork = function firstWork() {
 										return new Promise(function (resolve, reject) {
 											for (var i = 0; i < doubleCheckNewsOne.length; i++) {
 
-												// chrome notification
-												// *********
-
-												// var id = "0"
+												// invoking the chrome notification
+												// ********************
 												chrome.notifications.create({
 													type: "basic",
 													title: doubleCheckNewsOne[i],
@@ -62420,21 +62442,20 @@
 									var secondWork = function secondWork() {
 										return new Promise(function (resolve, reject) {
 											doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
-											joinToSingleString = null;
+											joinToSingleString = null; //assign null 
 											resolve('First promise function');
 										});
 									};
 
 									firstWork().then(function (firstWorkResult) {
 										console.log(firstWorkResult);
-										return secondWork(); //make sure to return the next function 
+										return secondWork();
 									}).then(function (secondWorkResult) {
 										console.log(secondWorkResult);
-										//make sure to return the next function
 									});
 
-									// ************************  
-								});
+									// *********end of promise***************  
+								}); //closing bracket for chrome storage
 							} else {
 								console.log("sameold news dont do anything");
 								doubleCheckNewsOne.splice(0, doubleCheckNewsOne.length);
@@ -62449,15 +62470,14 @@
 					// console.log(arrayWithAxiosget)
 					emptyArray.splice(0, emptyArray.length); //emptying array with similar properties
 
-					console.log("hey hy look-" + joinToSingleString);
+					// console.log("I log null:" +  joinToSingleString)
 				};
 
 				window.setInterval(requestToApi.bind(this, 50000), 50000);
-				// window.setInterval(requestToApi.bind(this, 80000), 80000, (1))
-				// window.setInterval(requestToApi.bind(this, 90000), 90000, (2))  
 			},
 
-			//  pseudo: what is not working?
+			// pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
+			//2. remember the checkd inboxes even when the browser is closed. 
 
 
 			render: function render() {

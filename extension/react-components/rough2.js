@@ -14,6 +14,17 @@ var RoughTwo = React.createClass({
       cnn: false,
       ap: false
     } 
+
+  },
+
+
+  componentDidMount: function(){
+
+    chrome.storage.sync.get('oldNews', function(result){
+      console.log(result)
+    })
+
+
   },
 
 
@@ -54,16 +65,6 @@ var RoughTwo = React.createClass({
   	console.log(this.state) //calling the set state
 
 
-    // logic for matching two objects 
-    // *******************************
-
-    var stateobject = this.state
-    var allinks = {
-      bbc: 'https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
-      cnn:'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
-      ap: 'https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'
-    }
-
     // variables used
     //********************************
 
@@ -75,15 +76,35 @@ var RoughTwo = React.createClass({
 
 
 
+
     // use dummy data to set inside the chrome storage initially
     //********************************
     chrome.storage.sync.clear(function(){
       console.log("cleared")
     })
 
-    chrome.storage.sync.set({'oldNews': ["dummy data", "dummy data"]}, function() {
-      console.log('dummy data saved saved');
-    });
+    // chrome.storage.sync.set({'oldNews': ["dummy data", "dummy data"]}, function() {
+    //   console.log('dummy data saved saved');
+    // });
+
+
+
+
+
+
+
+
+    // logic for matching two objects 
+    // *******************************
+
+    var stateobject = this.state
+    var allinks = {
+      bbc: 'https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
+      cnn:'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
+      ap: 'https://newsapi.org/v1/articles?source=associated-press&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab'
+    }
+
+
 
 
     // make sure to keep using this logic at intervals to make a request
@@ -121,7 +142,7 @@ var RoughTwo = React.createClass({
             doubleCheckNewsOne.push(newsTitle);
             // console.log(doubleCheckNewsOne)
             joinToSingleString = doubleCheckNewsOne.join()
-            // console.log(joinToSingleString) 
+            console.log(joinToSingleString) 
           };
         }//closing bracket of for loop
 
@@ -131,7 +152,8 @@ var RoughTwo = React.createClass({
         //***************************************
 
         chrome.storage.sync.get('oldNews', function(result){
-          console.log(result)
+          console.log(result) //this brings out the dummy data 
+
           // console.log(doubleCheckNewsOne)
           if ( result.oldNews !== joinToSingleString){
 
@@ -214,7 +236,8 @@ var RoughTwo = React.createClass({
 
 
 // pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
-//2. remember the checkd inboxes even when the browser is closed. 
+//2. remember the checkd inboxes even when the browser is closed.
+//3. bring the state as a prop to componentdidmount  
 
 
 
