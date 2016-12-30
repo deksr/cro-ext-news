@@ -18,14 +18,38 @@ var RoughTwo = React.createClass({
   },
 
 
+
+
+
   componentDidMount: function(){
 
-    chrome.storage.sync.get('oldNews', function(result){
-      console.log(result)
+
+   // here we are getting the state saved in the local storage
+   // *******************************
+    chrome.storage.sync.get('checkBoxState', function(result){
+      var objInObj = result.checkBoxState
+
+    
+      // here we select the DOM node
+      // *******************************
+      var inputs = document.querySelectorAll('input.iB');//select the dom
+
+      for (var i = 0; i < inputs.length; i++) {
+        console.log(inputs[i].getAttribute("value")); // gives each elements
+
+        for (var prop in objInObj){ 
+          if(objInObj[prop] === inputs[i].getAttribute("value")){ 
+            inputs[i].setAttribute("checked", "checked"); //set attribute
+          }
+        }
+
+      }
     })
 
-
   },
+
+
+
 
 
   sendCheckBoxValue: function(event,type){
@@ -60,6 +84,10 @@ var RoughTwo = React.createClass({
   },
 
 
+
+
+
+
   submitForm: function(event){
   	// console.log("clicked")
   	console.log(this.state) //calling the set state
@@ -73,12 +101,15 @@ var RoughTwo = React.createClass({
     var doubleCheckNewsOne = [] //saved notification titles 
     var joinToSingleString = [] //to join news into one single string
     var newsTitle; //this is for notification
+    var stateobject = this.state
+
+
 
 
 
 
     // use dummy data to set inside the chrome storage initially
-    //********************************
+    //***********************************************************
     chrome.storage.sync.clear(function(){
       console.log("cleared")
     })
@@ -91,13 +122,22 @@ var RoughTwo = React.createClass({
 
 
 
+    // save the choosen state in the storage when submit is clicked
+    // ******************************************************
+
+
+    chrome.storage.sync.set({'checkBoxState': stateobject}, function() {
+      console.log('state is saved');
+    })
+
+
 
 
 
     // logic for matching two objects 
     // *******************************
 
-    var stateobject = this.state
+    // var stateobject = this.state
     var allinks = {
       bbc: 'https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
       cnn:'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
@@ -235,19 +275,20 @@ var RoughTwo = React.createClass({
   },
 
 
-// pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
-//2. remember the checkd inboxes even when the browser is closed.
-//3. bring the state as a prop to componentdidmount  
+  // pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
+  //2. remember the checkd inboxes even when the browser is closed.
+  //3. bring the state as a prop to componentdidmount 
+  //4. if the plugin is closed witin  50000 , data is not stored into the storage.
 
 
 
   render: function () {
     return (
 	    <div>
-		      <input  type="checkbox" value = "bbc" onChange={function(event){ 
+		      <input className="iB" type="checkbox" value = "bbc" onChange={function(event){ 
            return this.sendCheckBoxValue(event,'bbc') 
         }.bind(this)}/> bbc news
-		      <input  type="checkbox" value = "cnn" onChange={function(event){ 
+		      <input className="iB" type="checkbox" value = "cnn" onChange={function(event){ 
            return this.sendCheckBoxValue(event,'cnn') 
         }.bind(this)}/> cnn news 
 		      <button onClick={this.submitForm}> save </button>

@@ -30472,8 +30472,36 @@
 
 	  componentDidMount: function componentDidMount() {
 
-	    chrome.storage.sync.get('oldNews', function (result) {
-	      console.log(result);
+	    // here we are getting the state saved in the local storage
+	    // *******************************
+	    chrome.storage.sync.get('checkBoxState', function (result) {
+	      var objInObj = result.checkBoxState;
+
+	      // here we are selecting the DOM node
+	      // *******************************
+
+	      var inputs = document.querySelectorAll('input.iB');
+
+	      for (var i = 0; i < inputs.length; i++) {
+	        console.log(inputs[i].getAttribute("value")); // gives each elements
+
+	        for (var prop in objInObj) {
+	          if (objInObj[prop] === inputs[i].getAttribute("value")) {
+	            inputs[i].setAttribute("checked", "checked"); //set attribute
+	          }
+	        }
+	      }
+
+	      // for (var i = 0; i < result.length; i++) {
+	      //   console.log(result[i])
+	      //     for (var prop in result[i]){
+	      //       console.log(result[i][prop]);
+	      //       if(result[i][prop] === inputs[i].getAttribute("value")){
+
+	      //         return b.setAttribute("checked", "checked");
+	      //       }
+	      //     }
+	      // };
 	    });
 	  },
 
@@ -30515,22 +30543,31 @@
 	    var doubleCheckNewsOne = []; //saved notification titles 
 	    var joinToSingleString = []; //to join news into one single string
 	    var newsTitle; //this is for notification
-
+	    var stateobject = this.state;
 
 	    // use dummy data to set inside the chrome storage initially
-	    //********************************
+	    //***********************************************************
 	    chrome.storage.sync.clear(function () {
 	      console.log("cleared");
 	    });
 
-	    chrome.storage.sync.set({ 'oldNews': ["dummy data", "dummy data"] }, function () {
-	      console.log('dummy data saved saved');
+	    // chrome.storage.sync.set({'oldNews': ["dummy data", "dummy data"]}, function() {
+	    //   console.log('dummy data saved saved');
+	    // });
+
+
+	    // save the choosen state in the storage when submit is clicked
+	    // ******************************************************
+
+
+	    chrome.storage.sync.set({ 'checkBoxState': stateobject }, function () {
+	      console.log('state is saved');
 	    });
 
 	    // logic for matching two objects 
 	    // *******************************
 
-	    var stateobject = this.state;
+	    // var stateobject = this.state
 	    var allinks = {
 	      bbc: 'https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
 	      cnn: 'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
@@ -30649,18 +30686,20 @@
 	  },
 
 	  // pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
-	  //2. remember the checkd inboxes even when the browser is closed. 
+	  //2. remember the checkd inboxes even when the browser is closed.
+	  //3. bring the state as a prop to componentdidmount 
+	  //4. if the plugin is closed witin  50000 , data is not stored into the storage.
 
 
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2.default.createElement('input', { type: 'checkbox', value: 'bbc', onChange: function (event) {
+	      _react2.default.createElement('input', { className: 'iB', type: 'checkbox', value: 'bbc', onChange: function (event) {
 	          return this.sendCheckBoxValue(event, 'bbc');
 	        }.bind(this) }),
 	      ' bbc news',
-	      _react2.default.createElement('input', { type: 'checkbox', value: 'cnn', onChange: function (event) {
+	      _react2.default.createElement('input', { className: 'iB', type: 'checkbox', value: 'cnn', onChange: function (event) {
 	          return this.sendCheckBoxValue(event, 'cnn');
 	        }.bind(this) }),
 	      ' cnn news',
@@ -62300,8 +62339,36 @@
 
 			componentDidMount: function componentDidMount() {
 
-				chrome.storage.sync.get('oldNews', function (result) {
-					console.log(result);
+				// here we are getting the state saved in the local storage
+				// *******************************
+				chrome.storage.sync.get('checkBoxState', function (result) {
+					var objInObj = result.checkBoxState;
+
+					// here we are selecting the DOM node
+					// *******************************
+
+					var inputs = document.querySelectorAll('input.iB');
+
+					for (var i = 0; i < inputs.length; i++) {
+						console.log(inputs[i].getAttribute("value")); // gives each elements
+
+						for (var prop in objInObj) {
+							if (objInObj[prop] === inputs[i].getAttribute("value")) {
+								inputs[i].setAttribute("checked", "checked"); //set attribute
+							}
+						}
+					}
+
+					// for (var i = 0; i < result.length; i++) {
+					//   console.log(result[i])
+					//     for (var prop in result[i]){
+					//       console.log(result[i][prop]);
+					//       if(result[i][prop] === inputs[i].getAttribute("value")){
+
+					//         return b.setAttribute("checked", "checked");
+					//       }
+					//     }
+					// };
 				});
 			},
 
@@ -62343,22 +62410,31 @@
 				var doubleCheckNewsOne = []; //saved notification titles 
 				var joinToSingleString = []; //to join news into one single string
 				var newsTitle; //this is for notification
-
+				var stateobject = this.state;
 
 				// use dummy data to set inside the chrome storage initially
-				//********************************
+				//***********************************************************
 				chrome.storage.sync.clear(function () {
 					console.log("cleared");
 				});
 
-				chrome.storage.sync.set({ 'oldNews': ["dummy data", "dummy data"] }, function () {
-					console.log('dummy data saved saved');
+				// chrome.storage.sync.set({'oldNews': ["dummy data", "dummy data"]}, function() {
+				//   console.log('dummy data saved saved');
+				// });
+
+
+				// save the choosen state in the storage when submit is clicked
+				// ******************************************************
+
+
+				chrome.storage.sync.set({ 'checkBoxState': stateobject }, function () {
+					console.log('state is saved');
 				});
 
 				// logic for matching two objects 
 				// *******************************
 
-				var stateobject = this.state;
+				// var stateobject = this.state
 				var allinks = {
 					bbc: 'https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
 					cnn: 'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=60941c39a76e4f14902097a5030f4cab',
@@ -62477,13 +62553,15 @@
 			},
 
 			// pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
-			//2. remember the checkd inboxes even when the browser is closed. 
+			//2. remember the checkd inboxes even when the browser is closed.
+			//3. bring the state as a prop to componentdidmount 
+			//4. if the plugin is closed witin  50000 , data is not stored into the storage.
 
 
 			render: function render() {
-				return _react2.default.createElement('div', null, _react2.default.createElement('input', { type: 'checkbox', value: 'bbc', onChange: function (event) {
+				return _react2.default.createElement('div', null, _react2.default.createElement('input', { className: 'iB', type: 'checkbox', value: 'bbc', onChange: function (event) {
 						return this.sendCheckBoxValue(event, 'bbc');
-					}.bind(this) }), ' bbc news', _react2.default.createElement('input', { type: 'checkbox', value: 'cnn', onChange: function (event) {
+					}.bind(this) }), ' bbc news', _react2.default.createElement('input', { className: 'iB', type: 'checkbox', value: 'cnn', onChange: function (event) {
 						return this.sendCheckBoxValue(event, 'cnn');
 					}.bind(this) }), ' cnn news', _react2.default.createElement('button', { onClick: this.submitForm }, ' save '), this.state.bbc, this.state.cnn);
 			}
