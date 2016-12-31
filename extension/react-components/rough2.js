@@ -57,8 +57,8 @@ var RoughTwo = React.createClass({
     console.log(event.target.value)
 
 
-   // here we are setting the state logic
-   // *******************************
+    // here we are setting the state logic
+    // *******************************
     let state = {}
 
     if (type === 'bbc' && event.target.checked === true){
@@ -277,8 +277,7 @@ var RoughTwo = React.createClass({
 
   // pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
   //2. remember the checkd inboxes even when the browser is closed.
-  //3. bring the state as a prop to componentdidmount 
-  //4. if the plugin is closed witin  50000 , data is not stored into the storage.
+  //3. if the plugin is closed witin 50000 , data is not stored into the storage.
 
 
 

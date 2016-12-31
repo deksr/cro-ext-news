@@ -30477,10 +30477,9 @@
 	    chrome.storage.sync.get('checkBoxState', function (result) {
 	      var objInObj = result.checkBoxState;
 
-	      // here we are selecting the DOM node
+	      // here we select the DOM node
 	      // *******************************
-
-	      var inputs = document.querySelectorAll('input.iB');
+	      var inputs = document.querySelectorAll('input.iB'); //select the dom
 
 	      for (var i = 0; i < inputs.length; i++) {
 	        console.log(inputs[i].getAttribute("value")); // gives each elements
@@ -30491,17 +30490,6 @@
 	          }
 	        }
 	      }
-
-	      // for (var i = 0; i < result.length; i++) {
-	      //   console.log(result[i])
-	      //     for (var prop in result[i]){
-	      //       console.log(result[i][prop]);
-	      //       if(result[i][prop] === inputs[i].getAttribute("value")){
-
-	      //         return b.setAttribute("checked", "checked");
-	      //       }
-	      //     }
-	      // };
 	    });
 	  },
 
@@ -30687,8 +30675,7 @@
 
 	  // pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
 	  //2. remember the checkd inboxes even when the browser is closed.
-	  //3. bring the state as a prop to componentdidmount 
-	  //4. if the plugin is closed witin  50000 , data is not stored into the storage.
+	  //3. if the plugin is closed witin 50000 , data is not stored into the storage.
 
 
 	  render: function render() {
@@ -62344,10 +62331,9 @@
 				chrome.storage.sync.get('checkBoxState', function (result) {
 					var objInObj = result.checkBoxState;
 
-					// here we are selecting the DOM node
+					// here we select the DOM node
 					// *******************************
-
-					var inputs = document.querySelectorAll('input.iB');
+					var inputs = document.querySelectorAll('input.iB'); //select the dom
 
 					for (var i = 0; i < inputs.length; i++) {
 						console.log(inputs[i].getAttribute("value")); // gives each elements
@@ -62358,17 +62344,6 @@
 							}
 						}
 					}
-
-					// for (var i = 0; i < result.length; i++) {
-					//   console.log(result[i])
-					//     for (var prop in result[i]){
-					//       console.log(result[i][prop]);
-					//       if(result[i][prop] === inputs[i].getAttribute("value")){
-
-					//         return b.setAttribute("checked", "checked");
-					//       }
-					//     }
-					// };
 				});
 			},
 
@@ -62554,8 +62529,7 @@
 
 			// pseudo: 1. things to add: when save is clicked without selecting anything, false value is submited and it still makes request. make sure o set a condiion on this! 
 			//2. remember the checkd inboxes even when the browser is closed.
-			//3. bring the state as a prop to componentdidmount 
-			//4. if the plugin is closed witin  50000 , data is not stored into the storage.
+			//3. if the plugin is closed witin 50000 , data is not stored into the storage.
 
 
 			render: function render() {
