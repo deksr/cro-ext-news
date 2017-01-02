@@ -9,9 +9,13 @@
    "default_popup": "extension/index.html"
   },
   "permissions": [
-   "activeTab", "storage", "notifications", "cookies"
+   "activeTab", "storage", "notifications", "cookies", "https://www.newsapi.org/"
 
   ],
+  "background": {
+    "scripts": ["extension/bundle.js"],
+    "persistent": true
+  },
   "content_scripts": [
     {
       "matches": ["http://www.google.com/*"],
