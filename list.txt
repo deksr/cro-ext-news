@@ -4,3 +4,4 @@
 4.Layout (user stories) finished and saved
 5.Adding some more pages to layout
 6. fine tuning the layout.
+7. adding more pages. Done!
