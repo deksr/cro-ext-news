@@ -5,3 +5,4 @@
 5.Adding some more pages to layout
 6. fine tuning the layout.
 7. adding more pages. Done!
+8. added a new page.
