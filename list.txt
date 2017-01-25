@@ -10,3 +10,4 @@
 10. added to portfolio.
 11. Worked on portfolio.
 12. Did research on front end technologies. 
+13. Css on portfolio.
