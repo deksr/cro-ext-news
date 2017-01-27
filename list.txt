@@ -12,3 +12,4 @@
 12. Did research on front end technologies. 
 13. Css on portfolio.
 14. browsed through new technoligies.
+15. browsing through mdn.
