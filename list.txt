@@ -13,3 +13,4 @@
 13. Css on portfolio.
 14. browsed through new technoligies.
 15. browsing through mdn.
+16. moved few things around on portfolio.
