@@ -16,3 +16,4 @@
 16. moved few things around on portfolio.
 17. did very light browsing on mdn. 
 18. searching stack overflow.
+19. made some change on the layout.
