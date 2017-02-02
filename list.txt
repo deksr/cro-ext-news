@@ -18,3 +18,4 @@
 18. searching stack overflow.
 19. made some change on the layout.
 20. made change on the layout .
+21. looking at new code.
